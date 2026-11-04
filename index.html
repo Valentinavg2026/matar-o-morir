@@ -390,6 +390,30 @@ function setHumanAnimation(fighter, state) {
   }
   action.setEffectiveTimeScale(state === 'run' ? 1.15 : 1);
 }
+function applyCharacterModelSelection(gender = selectedGender) {
+  // The Adventurer is the male model; the FRSC Officer is the female model.
+  // Move the already-loaded GLB objects between fighters instead of rebuilding
+  // the player's root (which used to discard the human model and show the doll).
+  if (!player.modelLoaded || !enemy.modelLoaded || !player.humanModel || !enemy.humanModel) return;
+  const wanted = gender === 'girl' ? 'girl' : 'boy';
+  if (wanted === currentPlayerModelGender) return;
+
+  const playerModel = player.humanModel, enemyModel = enemy.humanModel;
+  player.root.remove(playerModel);
+  enemy.root.remove(enemyModel);
+  player.root.add(enemyModel);
+  enemy.root.add(playerModel);
+
+  for (const key of ['humanModel', 'modelMixer', 'modelActions', 'modelAction']) {
+    const value = player[key];
+    player[key] = enemy[key];
+    enemy[key] = value;
+  }
+  currentPlayerModelGender = wanted;
+  setHumanAnimation(player, 'idle');
+  setHumanAnimation(enemy, 'idle');
+}
+let currentPlayerModelGender = 'boy';
 function setupHumanGLB(fighter, path) {
   fighter.modelLoaded = false; fighter.modelMixer = null; fighter.modelActions = {}; fighter.modelAction = null;
   gltfLoader.load(path, gltf => {
@@ -410,11 +434,13 @@ function setupHumanGLB(fighter, path) {
     for (const clip of (gltf.animations || [])) fighter.modelActions[clip.name.toLowerCase()] = fighter.modelMixer.clipAction(clip);
     fighter.modelLoaded = true;
     setHumanAnimation(fighter, 'idle');
+    // If the player chose a character before both GLBs finished loading, apply
+    // that choice as soon as the two models are ready.
+    applyCharacterModelSelection(selectedGender);
   }, undefined, err => console.error('Error cargando GLB ' + path, err));
 }
-// El modelo del jugador se carga después de elegir personaje, sobre la raíz definitiva.
-// Así evitamos que chooseCharacter lo reemplace por el muñeco de reserva.
-setupHumanGLB(enemy, './The_Adventurer.glb');
+setupHumanGLB(player, './The_Adventurer.glb');
+setupHumanGLB(enemy, './The_FRSC_Officer_Nigeria.glb');
 
 const keys=new Set();let gameOver=false,round=1,last=performance.now(),elapsed=0,enemyThink=0;
 // Mascota 3D opcional: aparece cuando el jugador desbloquea el lobo.
@@ -540,13 +566,10 @@ function chooseCharacter(gender){
  if(!enteredName){document.getElementById('playerNameInput').focus();document.getElementById('playerNameInput').setCustomValidity('Escribí tu nombre para comenzar.');document.getElementById('playerNameInput').reportValidity();return;}
  playerName=enteredName.slice(0,18);document.getElementById('playerNameInput').value=playerName;
  selectedGender=gender;selectedOutfit=document.getElementById('outfitChoice').value;selectedHair=document.getElementById('hairChoice').value;localTwoPlayer=document.getElementById('localTwoPlayer').checked;
- // Rebuild the player model so the choice changes the visible 3D character.
- scene.remove(player.root);
- const fresh=gender==='girl'?makeFighter(0x6d2b78,0xff62b0,-2.1,gender,selectedOutfit,selectedHair):makeFighter(0x2585ed,0x42e6ff,-2.1,gender,selectedOutfit,selectedHair);
- player.root=fresh.root;player.torso=fresh.torso;player.arms=fresh.arms;player.legs=fresh.legs;player.bodyMat=fresh.bodyMat;player.accentMat=fresh.accentMat;player.armorMat=fresh.armorMat;player.baseColor=fresh.baseColor;player.shoulderArmor=fresh.shoulderArmor;player.aura=fresh.aura;player.crown=fresh.crown;
- // Cargar el modelo humano masculino en la nueva raíz del jugador, después de reconstruirla.
- setupHumanGLB(player, './The_FRSC_Officer_Nigeria.glb');
- player.root.rotation.y=Math.PI/2;player.hp=100;player.attack=0;player.cooldown=0;player.block=false;player.vy=0;player.grounded=true;
+ // Keep both fighter roots and exchange the real GLB models according to
+ // the selection. This prevents duplicate women and the low-poly fallback doll.
+ applyCharacterModelSelection(gender);
+ player.hp=100;player.attack=0;player.cooldown=0;player.block=false;player.vy=0;player.grounded=true;
  try{localStorage.setItem(GENDER_KEY,gender);localStorage.setItem(PLAYER_NAME_KEY,playerName);localStorage.setItem('arena3d_outfit_v1',selectedOutfit);localStorage.setItem('arena3d_hair_v1',selectedHair);}catch(err){}
  document.querySelector('.hud .fighter .name span').textContent=(gender==='girl'?'👧 ':'👦 ')+playerName;
  if(localTwoPlayer){document.querySelector('.hud .fighter:nth-child(2) .name span').textContent='🥋 JUGADOR 2';status.textContent='2 JUGADORES · ¡LUCHEN!';}else{document.querySelector('.hud .fighter:nth-child(2) .name span').textContent='🤖 RIVAL';}document.getElementById('characterSelect').style.display='none';gameStarted=true;reset();
