@@ -1,12 +1,10 @@
-MATAR O MORIR — versión web optimizada
+MATAR O MORIR — corrección de carga del personaje masculino
 
-Contenido:
+Archivos:
 - index.html
-- The_Adventurer.glb (modelo masculino conservado)
-- The_FRSC_Officer_Nigeria.glb (modelo femenino conservado tal como estaba en el proyecto)
+- The_Adventurer.glb
+- The_FRSC_Officer_Nigeria.glb
 
-Para GitHub Pages: subir/reemplazar estos TRES archivos en la raíz del repositorio matar-o-morir. Mantener exactamente esos nombres. Luego esperar a que GitHub Pages publique y recargar la página.
+Corrección: el modelo masculino ahora se carga después de elegir personaje, sobre la raíz 3D definitiva. Antes, el juego reconstruía al jugador después de iniciar la carga del modelo y podía dejar visible el muñeco de reserva.
 
-Esta optimización reduce resolución de renderizado en pantallas de alta densidad, baja el mapa de sombras y pausa el render cuando la pestaña está oculta. Los modelos GLB fueron optimizados en sus texturas; no se modificó el contenido visible intencionalmente.
-
-Importante: esto es una versión WEB para probar en GitHub Pages, NO es un APK nuevo. No borres la APK original que ya funciona.
+Subir/reemplazar los tres archivos (index.html y ambos GLB) en la raíz del repositorio GitHub Pages, conservando exactamente los nombres. No borrar la APK original.

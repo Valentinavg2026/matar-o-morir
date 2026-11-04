@@ -412,7 +412,8 @@ function setupHumanGLB(fighter, path) {
     setHumanAnimation(fighter, 'idle');
   }, undefined, err => console.error('Error cargando GLB ' + path, err));
 }
-setupHumanGLB(player, './The_FRSC_Officer_Nigeria.glb');
+// El modelo del jugador se carga después de elegir personaje, sobre la raíz definitiva.
+// Así evitamos que chooseCharacter lo reemplace por el muñeco de reserva.
 setupHumanGLB(enemy, './The_Adventurer.glb');
 
 const keys=new Set();let gameOver=false,round=1,last=performance.now(),elapsed=0,enemyThink=0;
@@ -543,6 +544,8 @@ function chooseCharacter(gender){
  scene.remove(player.root);
  const fresh=gender==='girl'?makeFighter(0x6d2b78,0xff62b0,-2.1,gender,selectedOutfit,selectedHair):makeFighter(0x2585ed,0x42e6ff,-2.1,gender,selectedOutfit,selectedHair);
  player.root=fresh.root;player.torso=fresh.torso;player.arms=fresh.arms;player.legs=fresh.legs;player.bodyMat=fresh.bodyMat;player.accentMat=fresh.accentMat;player.armorMat=fresh.armorMat;player.baseColor=fresh.baseColor;player.shoulderArmor=fresh.shoulderArmor;player.aura=fresh.aura;player.crown=fresh.crown;
+ // Cargar el modelo humano masculino en la nueva raíz del jugador, después de reconstruirla.
+ setupHumanGLB(player, './The_FRSC_Officer_Nigeria.glb');
  player.root.rotation.y=Math.PI/2;player.hp=100;player.attack=0;player.cooldown=0;player.block=false;player.vy=0;player.grounded=true;
  try{localStorage.setItem(GENDER_KEY,gender);localStorage.setItem(PLAYER_NAME_KEY,playerName);localStorage.setItem('arena3d_outfit_v1',selectedOutfit);localStorage.setItem('arena3d_hair_v1',selectedHair);}catch(err){}
  document.querySelector('.hud .fighter .name span').textContent=(gender==='girl'?'👧 ':'👦 ')+playerName;
