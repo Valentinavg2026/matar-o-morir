@@ -96,6 +96,10 @@ button.special{background:linear-gradient(145deg,#6434c9ed,#bb2479ed);border-col
   }
 }
 </script>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#080e1d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
 <div id="gameWindow">
@@ -664,6 +668,13 @@ requestAnimationFrame(animate);
 @media(min-width:800px){.actions{right:6vw;bottom:clamp(14px,5vh,38px);max-width:min(72vw,540px)}.actions button,.actions button.attack,.actions button.special{min-width:64px;width:auto;min-height:58px;height:auto;font-size:14px}}
 </style>
 
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/sw.js").catch(error => console.warn("No se pudo registrar el modo instalable:", error));
+      });
+    }
+  </script>
 </body>
 </html>
 <style>
