@@ -1,17 +1,18 @@
-const CACHE_NAME = "matar-o-morir-v1";
-const APP_FILES = [
-  "/",
-  "/index.html",
-  "/manifest.webmanifest",
-  "/icon.svg",
-  "/The_Adventurer.glb",
-  "/The_FRSC_Officer_Nigeria.glb"
+const CACHE_NAME = "matar-o-morir-v2";
+const BASE = self.registration.scope;
+const SHELL = [
+  new URL("./", BASE).href,
+  new URL("./index.html", BASE).href,
+  new URL("./manifest.webmanifest", BASE).href,
+  new URL("./icon.svg", BASE).href,
+  new URL("./The_Adventurer.glb", BASE).href,
+  new URL("./The_FRSC_Officer_Nigeria.glb", BASE).href
 ];
 
 self.addEventListener("install", event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(APP_FILES))
+      .then(cache => cache.addAll(SHELL))
       .then(() => self.skipWaiting())
   );
 });
@@ -34,10 +35,10 @@ self.addEventListener("fetch", event => {
       fetch(request)
         .then(response => {
           const copy = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put("/index.html", copy));
+          caches.open(CACHE_NAME).then(cache => cache.put(new URL("./index.html", BASE), copy));
           return response;
         })
-        .catch(() => caches.match("/index.html"))
+        .catch(() => caches.match(new URL("./index.html", BASE)))
     );
     return;
   }
