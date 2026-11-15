@@ -96,7 +96,7 @@ button.special{background:linear-gradient(145deg,#6434c9ed,#bb2479ed);border-col
   }
 }
 </script>
-  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="manifest" href="./manifest.webmanifest">
   <meta name="theme-color" content="#080e1d">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -671,7 +671,7 @@ requestAnimationFrame(animate);
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
-        navigator.serviceWorker.register("/sw.js").catch(error => console.warn("No se pudo registrar el modo instalable:", error));
+        navigator.serviceWorker.register("./sw.js", { scope: "./" }).catch(error => console.warn("No se pudo registrar el modo instalable:", error));
       });
     }
   </script>
