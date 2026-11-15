@@ -439,8 +439,8 @@ function setupHumanGLB(fighter, path) {
     applyCharacterModelSelection(selectedGender);
   }, undefined, err => console.error('Error cargando GLB ' + path, err));
 }
-setupHumanGLB(player, './The_Prison_Escapee.glb');
-setupHumanGLB(enemy, './Athletic_woman.glb');
+setupHumanGLB(player, './The_FRSC_Officer_Nigeria.glb');
+setupHumanGLB(enemy, './The_Adventurer.glb');
 
 const keys=new Set();let gameOver=false,round=1,last=performance.now(),elapsed=0,enemyThink=0;
 // Mascota 3D opcional: aparece cuando el jugador desbloquea el lobo.
