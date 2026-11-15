@@ -1,10 +1,12 @@
-const CACHE_NAME = "matar-o-morir-v2";
+const CACHE_NAME = "matar-o-morir-v3";
 const BASE = self.registration.scope;
 const SHELL = [
   new URL("./", BASE).href,
   new URL("./index.html", BASE).href,
   new URL("./manifest.webmanifest", BASE).href,
   new URL("./icon.svg", BASE).href,
+  new URL("./icon-192.png", BASE).href,
+  new URL("./icon-512.png", BASE).href,
   new URL("./The_Adventurer.glb", BASE).href,
   new URL("./The_FRSC_Officer_Nigeria.glb", BASE).href
 ];
