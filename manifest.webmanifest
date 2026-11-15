@@ -1,21 +1,21 @@
 {
-  "id": "/",
+  "id": "./",
   "name": "MATAR O MORIR",
   "short_name": "MATAR O MORIR",
   "description": "Juego de peleas 3D en el bosque.",
   "lang": "es-AR",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "orientation": "landscape",
   "background_color": "#080e1d",
   "theme_color": "#080e1d",
   "icons": [
     {
-      "src": "/icon.svg",
+      "src": "./icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
