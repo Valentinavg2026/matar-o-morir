@@ -391,7 +391,7 @@ function setHumanAnimation(fighter, state) {
   action.setEffectiveTimeScale(state === 'run' ? 1.15 : 1);
 }
 function applyCharacterModelSelection(gender = selectedGender) {
-  // The Adventurer is the male model; the FRSC Officer is the female model.
+  // The Prison Escapee is the male model; Athletic Woman is the female model.
   // Move the already-loaded GLB objects between fighters instead of rebuilding
   // the player's root (which used to discard the human model and show the doll).
   if (!player.modelLoaded || !enemy.modelLoaded || !player.humanModel || !enemy.humanModel) return;
@@ -439,8 +439,8 @@ function setupHumanGLB(fighter, path) {
     applyCharacterModelSelection(selectedGender);
   }, undefined, err => console.error('Error cargando GLB ' + path, err));
 }
-setupHumanGLB(player, './The_Adventurer.glb');
-setupHumanGLB(enemy, './The_FRSC_Officer_Nigeria.glb');
+setupHumanGLB(player, './The_Prison_Escapee.glb');
+setupHumanGLB(enemy, './Athletic_woman.glb');
 
 const keys=new Set();let gameOver=false,round=1,last=performance.now(),elapsed=0,enemyThink=0;
 // Mascota 3D opcional: aparece cuando el jugador desbloquea el lobo.
