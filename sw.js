@@ -1,4 +1,4 @@
-const CACHE_NAME = "matar-o-morir-v3";
+const CACHE_NAME = "matar-o-morir-v4";
 const BASE = self.registration.scope;
 const SHELL = [
   new URL("./", BASE).href,
